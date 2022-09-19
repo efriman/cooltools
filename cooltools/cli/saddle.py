@@ -141,6 +141,12 @@ from . import cli
     show_default=True,
 )
 @click.option(
+    "--ignore_na", 
+    help="Specify if wanting to plot even if regions are missing assigned values",
+    is_flag=True, 
+    default=False
+)
+@click.option(
     "--cmap", help="Name of matplotlib colormap", default="coolwarm", show_default=True
 )
 @click.option(
@@ -174,6 +180,7 @@ def saddle(
     out_prefix,
     fig,
     scale,
+    ignore_na,
     cmap,
     vmin,
     vmax,
@@ -293,6 +300,7 @@ def saddle(
         view_df=view_df,
         clr_weight_name=clr_weight_name,
         mask_clr_bad_bins=True,
+        drop_track_na = not ignore_na,
     )
     digitized_track, binedges = api.saddle.digitize(
         track.iloc[:, :4],
